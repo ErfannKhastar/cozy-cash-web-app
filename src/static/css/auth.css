@@ -1,0 +1,95 @@
+:root {
+  /* Shared Colors (Same as Landing Page) */
+  --bg-cream: #fdfcf0;
+  --text-dark: #4a3b32;
+  --primary-coffee: #6f4e37;
+  --primary-hover: #5d4037;
+  --accent-terracotta: #e07a5f;
+  --input-bg: #f9f7f2; /* Very light beige for inputs */
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  background-color: var(--bg-cream);
+  color: var(--text-dark);
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+.fw-bold {
+  font-family: "Poppins", sans-serif;
+}
+
+.text-dark-brown {
+  color: var(--text-dark);
+}
+.text-primary-cozy {
+  color: var(--primary-coffee);
+}
+.text-accent {
+  color: var(--accent-terracotta);
+}
+
+/* Card Styling */
+.auth-card {
+  border-radius: 20px; /* Rounded corners for cozy feel */
+  overflow: hidden;
+}
+
+/* Tab Styling (Nav Pills) */
+.nav-pills .nav-link {
+  color: var(--text-dark);
+  transition: all 0.3s ease;
+}
+
+.nav-pills .nav-link.active {
+  background-color: var(--primary-coffee);
+  color: white;
+}
+
+/* Input Fields Customization */
+.form-control {
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  padding: 0.75rem 1rem;
+  background-color: var(--input-bg);
+}
+
+/* Change the blue focus ring to our coffee color */
+.form-control:focus {
+  background-color: #fff;
+  border-color: var(--primary-coffee);
+  box-shadow: 0 0 0 0.25rem rgba(111, 78, 55, 0.2); /* Coffee color with opacity */
+}
+
+/* Button Styling */
+.btn-primary-cozy {
+  background-color: var(--primary-coffee);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary-cozy:hover {
+  background-color: var(--primary-hover);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 576px) {
+  .auth-card {
+    border-radius: 0;
+    box-shadow: none !important;
+    min-height: 100vh;
+  }
+  .container-fluid {
+    padding: 0;
+    background-color: #fff;
+  }
+}

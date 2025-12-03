@@ -1,0 +1,148 @@
+:root {
+  /* Same Palette */
+  --bg-cream: #fdfcf0;
+  --text-dark: #4a3b32;
+  --primary-coffee: #6f4e37;
+  --primary-hover: #5d4037;
+  --accent-terracotta: #e07a5f;
+
+  /* New Soft Colors for Dashboard Icons */
+  --soft-terracotta: #fae3dc;
+  --soft-coffee: #e6dad3;
+  --soft-green: #dcfae0;
+  --text-success: #2e7d32;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  background-color: var(--bg-cream);
+  color: var(--text-dark);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+.navbar-brand {
+  font-family: "Poppins", sans-serif;
+}
+
+.text-dark-brown {
+  color: var(--text-dark);
+}
+.text-primary-cozy {
+  color: var(--primary-coffee);
+}
+.text-accent {
+  color: var(--accent-terracotta);
+}
+
+/* Navbar */
+.navbar-nav .nav-link.active {
+  color: var(--primary-coffee) !important;
+  font-weight: 700;
+  border-bottom: 2px solid var(--primary-coffee);
+}
+
+.btn-outline-cozy {
+  border-color: var(--primary-coffee);
+  color: var(--primary-coffee);
+}
+.btn-outline-cozy:hover {
+  background-color: var(--primary-coffee);
+  color: #fff;
+}
+
+.btn-primary-cozy {
+  background-color: var(--primary-coffee) !important;
+  border-color: var(--primary-coffee) !important;
+  color: white !important;
+}
+
+.btn-primary-cozy:hover {
+  background-color: var(--primary-hover) !important;
+  border-color: var(--primary-hover) !important;
+}
+
+/* Cozy Cards */
+.card-cozy {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(74, 59, 50, 0.05);
+  transition: transform 0.2s;
+}
+
+.card-cozy:hover {
+  transform: translateY(-3px);
+}
+
+/* Icons */
+.icon-box {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-box-sm {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bg-soft-terracotta {
+  background-color: var(--soft-terracotta);
+}
+.bg-soft-coffee {
+  background-color: var(--soft-coffee);
+}
+.bg-soft-green {
+  background-color: var(--soft-green);
+}
+
+.bg-light-input {
+  background-color: #fdfcf0 !important; /* همون رنگ کرم */
+  border: 1px solid #e0e0e0;
+  color: #4a3b32;
+}
+
+.bg-light-input:focus {
+  background-color: #ffffff !important;
+  border-color: var(--primary-coffee);
+  box-shadow: 0 0 0 0.2rem rgba(111, 78, 55, 0.15);
+}
+
+/* Chart Placeholder Styling */
+.chart-placeholder {
+  height: 300px; /* ارتفاع موقت جای خالی نمودار */
+  border: 2px dashed #d1c7c0;
+  background-color: #fbfbf9;
+}
+
+/* Floating Action Button (FAB) */
+.fab-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--primary-coffee);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.fab-btn:hover {
+  background-color: var(--primary-hover);
+  color: #fff;
+  transform: scale(1.1) rotate(90deg); /* یه انیمیشن چرخش کوچولو */
+}
