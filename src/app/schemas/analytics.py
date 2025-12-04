@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict, field_validator
+from pydantic import BaseModel
 from typing import List
 
 
@@ -27,6 +27,3 @@ class TrendDataPoint(BaseModel):
 
 class SpendingTrendResponse(BaseModel):
     data: List[TrendDataPoint]
-
-
-

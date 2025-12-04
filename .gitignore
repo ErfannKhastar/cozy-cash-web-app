@@ -60,3 +60,7 @@ Desktop.ini
 # Project Specifics
 src/app/static/uploads/
 src/app/alembic/__pycache__/
+
+
+.mypy_cache/
+.ruff_cache/

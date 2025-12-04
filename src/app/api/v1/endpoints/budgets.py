@@ -31,7 +31,6 @@ def create_budget(
     db: Session = Depends(get_db),
     current_user: Users = Depends(deps.get_current_user),
 ):
-    # چک کنیم که بودجه تکراری برای این ماه و دسته وجود نداشته باشه
     existing_budget = crud_budgets.get_budget_by_category(
         db, user_id=current_user.id, category=budget_in.category, month=budget_in.month
     )

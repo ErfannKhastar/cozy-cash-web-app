@@ -1,4 +1,12 @@
-from sqlalchemy import Column, String, Integer, DATE, Numeric, ForeignKey, UniqueConstraint
+from sqlalchemy import (
+    Column,
+    String,
+    Integer,
+    DATE,
+    Numeric,
+    ForeignKey,
+    UniqueConstraint,
+)
 from src.app.db.session import Base
 
 
@@ -14,5 +22,7 @@ class Budgets(Base):
     month = Column(DATE, nullable=False)
 
     __table_args__ = (
-        UniqueConstraint("user_id", "category", "month", name="user_category_month_unique"),
+        UniqueConstraint(
+            "user_id", "category", "month", name="user_category_month_unique"
+        ),
     )

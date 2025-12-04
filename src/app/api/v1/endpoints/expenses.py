@@ -39,7 +39,7 @@ def create_expense(
 @router.put("/{expense_id}", response_model=expense_schemas.ExpenseResponse)
 def update_expense(
     expense_id: int,
-    expense_in: expense_schemas.ExpenseCreate,  # یا ExpenseUpdate اگر جدا کردی
+    expense_in: expense_schemas.ExpenseCreate,
     db: Session = Depends(get_db),
     current_user: Users = Depends(deps.get_current_user),
 ):

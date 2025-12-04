@@ -1,8 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func, desc, extract, cast, Date
 from typing import Optional
-from datetime import datetime
-from decimal import Decimal
 from src.app.models.expenses import Expenses
 from src.app.models.budgets import Budgets
 

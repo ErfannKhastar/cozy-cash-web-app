@@ -6,10 +6,9 @@ from decimal import Decimal
 from src.app.db.session import get_db
 from src.app.api import deps
 from src.app.models.users import Users
-
 from src.app.crud import analytics as crud_analytics
-
 from src.app.schemas import analytics as analytics_schemas
+
 
 router = APIRouter()
 
