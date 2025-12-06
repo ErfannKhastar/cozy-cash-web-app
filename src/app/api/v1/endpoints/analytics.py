@@ -1,3 +1,11 @@
+"""
+Financial Analytics and Dashboard Endpoints.
+
+This module aggregates user financial data to provide high-level summaries,
+charts, and trends. It calculates total spending, remaining budgets, and
+category-wise breakdowns to help users visualize their financial health.
+"""
+
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from typing import Optional
@@ -20,6 +28,21 @@ def get_dashboard_summary(
     month: Optional[int] = Query(None, ge=1, le=12),
     year: Optional[int] = Query(None, ge=2000, le=2100),
 ):
+    """
+    Provides a high-level summary of the user's financial status.
+
+    Calculates total expenses, total budget, remaining balance, and identifies
+    the top spending category for a given month/year.
+
+    Args:
+        db (Session): Database session.
+        current_user (Users): Authenticated user.
+        month (int, optional): Month to filter (1-12). Defaults to current month if None.
+        year (int, optional): Year to filter. Defaults to current year if None.
+
+    Returns:
+        DashboardSummary: An object containing financial totals and a status indicator (Safe/Warning/Danger).
+    """
     if month and not year:
         year = datetime.now().year
 
@@ -53,6 +76,21 @@ def get_category_breakdown(
     month: Optional[int] = Query(None, ge=1, le=12),
     year: Optional[int] = Query(None, ge=2000, le=2100),
 ):
+    """
+    Retrieves spending breakdown grouped by category.
+
+    Used for generating pie/doughnut charts. Returns the total amount and
+    percentage of total spending for each category.
+
+    Args:
+        db (Session): Database session.
+        current_user (Users): Authenticated user.
+        month (int, optional): Month filter.
+        year (int, optional): Year filter.
+
+    Returns:
+        CategoryBreakdownResponse: A list of categories sorted by spending amount.
+    """
     if month and not year:
         year = datetime.now().year
 
@@ -83,6 +121,20 @@ def get_spending_trend(
     month: Optional[int] = Query(None, ge=1, le=12),
     year: Optional[int] = Query(None, ge=2000, le=2100),
 ):
+    """
+    Retrieves daily spending trends for line charts.
+
+    Aggregates expenses by day to show spending patterns over the selected month.
+
+    Args:
+        db (Session): Database session.
+        current_user (Users): Authenticated user.
+        month (int, optional): Month filter.
+        year (int, optional): Year filter.
+
+    Returns:
+        SpendingTrendResponse: A list of daily spending totals.
+    """
     if month and not year:
         year = datetime.now().year
 

@@ -1,3 +1,10 @@
+"""
+Security and Hashing Utilities.
+
+This module provides functions for hashing passwords and verifying them against
+stored hashes using the bcrypt algorithm. It acts as a wrapper around the `passlib` library.
+"""
+
 from passlib.context import CryptContext
 
 

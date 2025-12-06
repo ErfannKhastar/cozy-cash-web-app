@@ -1,3 +1,11 @@
+"""
+API Router Configuration (Version 1).
+
+This module aggregates all the sub-routers (auth, users, expenses, budgets, analytics)
+into a single main router for version 1 of the API. This allows `main.py` to include
+all V1 endpoints with a single line of code.
+"""
+
 from fastapi import APIRouter
 from src.app.api.v1.endpoints import auth, users, expenses, budgets, analytics
 

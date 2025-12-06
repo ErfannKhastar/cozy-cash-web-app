@@ -1,18 +1,18 @@
+/* --- Variables --- */
 :root {
-  /* Same Palette */
   --bg-cream: #fdfcf0;
   --text-dark: #4a3b32;
   --primary-coffee: #6f4e37;
   --primary-hover: #5d4037;
   --accent-terracotta: #e07a5f;
 
-  /* New Soft Colors for Dashboard Icons */
   --soft-terracotta: #fae3dc;
   --soft-coffee: #e6dad3;
   --soft-green: #dcfae0;
   --text-success: #2e7d32;
 }
 
+/* --- Base Styles --- */
 body {
   font-family: "Open Sans", sans-serif;
   background-color: var(--bg-cream);
@@ -28,6 +28,7 @@ h5,
   font-family: "Poppins", sans-serif;
 }
 
+/* --- Text Utilities --- */
 .text-dark-brown {
   color: var(--text-dark);
 }
@@ -38,13 +39,14 @@ h5,
   color: var(--accent-terracotta);
 }
 
-/* Navbar */
+/* --- Navbar Overrides --- */
 .navbar-nav .nav-link.active {
   color: var(--primary-coffee) !important;
   font-weight: 700;
   border-bottom: 2px solid var(--primary-coffee);
 }
 
+/* --- Buttons --- */
 .btn-outline-cozy {
   border-color: var(--primary-coffee);
   color: var(--primary-coffee);
@@ -65,7 +67,7 @@ h5,
   border-color: var(--primary-hover) !important;
 }
 
-/* Cozy Cards */
+/* --- Cards & Components --- */
 .card-cozy {
   border: none;
   border-radius: 15px;
@@ -77,7 +79,7 @@ h5,
   transform: translateY(-3px);
 }
 
-/* Icons */
+/* --- Icons --- */
 .icon-box {
   width: 50px;
   height: 50px;
@@ -86,6 +88,7 @@ h5,
   align-items: center;
   justify-content: center;
 }
+
 .icon-box-sm {
   width: 40px;
   height: 40px;
@@ -94,6 +97,7 @@ h5,
   justify-content: center;
 }
 
+/* --- Background Colors --- */
 .bg-soft-terracotta {
   background-color: var(--soft-terracotta);
 }
@@ -104,8 +108,9 @@ h5,
   background-color: var(--soft-green);
 }
 
+/* --- Form Inputs --- */
 .bg-light-input {
-  background-color: #fdfcf0 !important; /* همون رنگ کرم */
+  background-color: #fdfcf0 !important;
   border: 1px solid #e0e0e0;
   color: #4a3b32;
 }
@@ -116,14 +121,13 @@ h5,
   box-shadow: 0 0 0 0.2rem rgba(111, 78, 55, 0.15);
 }
 
-/* Chart Placeholder Styling */
+/* --- Charts & FAB --- */
 .chart-placeholder {
-  height: 300px; /* ارتفاع موقت جای خالی نمودار */
+  height: 300px;
   border: 2px dashed #d1c7c0;
   background-color: #fbfbf9;
 }
 
-/* Floating Action Button (FAB) */
 .fab-btn {
   position: fixed;
   bottom: 30px;
@@ -144,5 +148,5 @@ h5,
 .fab-btn:hover {
   background-color: var(--primary-hover);
   color: #fff;
-  transform: scale(1.1) rotate(90deg); /* یه انیمیشن چرخش کوچولو */
+  transform: scale(1.1) rotate(90deg);
 }

@@ -1,3 +1,12 @@
+"""
+API Dependencies and Security.
+
+This module defines reusable dependencies for FastAPI endpoints, primarily
+focusing on authentication and authorization. It handles the creation of
+access tokens (JWT) and the retrieval of the current authenticated user
+from the database using the provided token.
+"""
+
 from typing import Optional
 from datetime import datetime, timedelta, timezone
 from fastapi import Depends, HTTPException, status
@@ -24,7 +33,15 @@ ACCESS_TOKEN_EXPIRE_MINUTES = settings.access_token_expire_minutes
 
 
 def create_access_token(data: dict) -> str:
+    """
+    Generates a JSON Web Token (JWT) for user authentication.
 
+    Args:
+        data (dict): The payload data to encode into the token (e.g., user ID).
+
+    Returns:
+        str: The encoded JWT string with an expiration time.
+    """
     to_encode = data.copy()
 
     expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -38,7 +55,22 @@ def create_access_token(data: dict) -> str:
 def get_current_user(
     db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
 ) -> Users:
+    """
+    Validates the access token and retrieves the current user.
 
+    This function is used as a FastAPI dependency to protect endpoints.
+    It decodes the JWT, extracts the user ID, and fetches the user from the database.
+
+    Args:
+        db (Session): The database session.
+        token (str): The OAuth2 access token extracted from the request header.
+
+    Returns:
+        Users: The authenticated user object.
+
+    Raises:
+        HTTPException: If the token is invalid, expired, or the user is not found.
+    """
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",

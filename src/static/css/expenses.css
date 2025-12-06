@@ -1,4 +1,4 @@
-/* Row Styles */
+/* --- Expense List Row --- */
 .expense-row {
   border-radius: 12px;
   transition: all 0.2s ease-in-out;
@@ -6,11 +6,11 @@
 }
 
 .expense-row:hover {
-  transform: translateY(-2px); /* کمی میاد بالا */
+  transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(74, 59, 50, 0.08) !important;
 }
 
-/* Icon Box in List */
+/* --- Icons --- */
 .icon-box {
   width: 48px;
   height: 48px;
@@ -20,7 +20,7 @@
   font-size: 1.2rem;
 }
 
-/* Pagination Colors */
+/* --- Pagination & Buttons --- */
 .page-link {
   color: var(--primary-coffee);
 }
@@ -29,23 +29,20 @@
   color: white !important;
 }
 
-/* static/css/expenses.css */
-
-/* این کدها را به آخر فایل اضافه کن */
-
+/* --- Dropdown Fixes (Z-Index) --- */
+/* Ensures dropdown menu appears above other rows */
 .expense-row {
-  position: relative; /* ضروری برای کارکرد z-index */
+  position: relative;
   z-index: 1;
-  overflow: visible !important; /* اجازه میده منو از کادر بزنه بیرون */
+  overflow: visible !important;
 }
 
 .expense-row:hover {
-  z-index: 100; /* وقتی هاور شد، میاد روی همه ردیف‌های دیگه */
-  transform: none !important; /* موقت: حرکت رو برمیداریم تا لرزش قطع شه */
-  /* یا اگر حرکت رو میخوای، باید خیلی جزئی باشه */
+  z-index: 100;
+  transform: none !important;
 }
 
 .dropdown-menu {
-  z-index: 1000 !important; /* منو همیشه اون بالا باشه */
+  z-index: 1000 !important;
   margin-top: 0 !important;
 }

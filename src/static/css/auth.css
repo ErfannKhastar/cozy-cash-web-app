@@ -1,20 +1,20 @@
+/* --- Variables --- */
 :root {
-  /* Shared Colors (Same as Landing Page) */
   --bg-cream: #fdfcf0;
   --text-dark: #4a3b32;
   --primary-coffee: #6f4e37;
   --primary-hover: #5d4037;
   --accent-terracotta: #e07a5f;
-  --input-bg: #f9f7f2; /* Very light beige for inputs */
+  --input-bg: #f9f7f2;
 }
 
+/* --- Base Styles --- */
 body {
   font-family: "Open Sans", sans-serif;
   background-color: var(--bg-cream);
   color: var(--text-dark);
 }
 
-/* Typography */
 h1,
 h2,
 h3,
@@ -22,6 +22,7 @@ h3,
   font-family: "Poppins", sans-serif;
 }
 
+/* --- Text Utilities --- */
 .text-dark-brown {
   color: var(--text-dark);
 }
@@ -32,13 +33,13 @@ h3,
   color: var(--accent-terracotta);
 }
 
-/* Card Styling */
+/* --- Auth Card Component --- */
 .auth-card {
-  border-radius: 20px; /* Rounded corners for cozy feel */
+  border-radius: 20px;
   overflow: hidden;
 }
 
-/* Tab Styling (Nav Pills) */
+/* --- Navigation Tabs (Pills) --- */
 .nav-pills .nav-link {
   color: var(--text-dark);
   transition: all 0.3s ease;
@@ -49,7 +50,7 @@ h3,
   color: white;
 }
 
-/* Input Fields Customization */
+/* --- Form Controls --- */
 .form-control {
   border-radius: 12px;
   border: 1px solid #e0e0e0;
@@ -57,14 +58,13 @@ h3,
   background-color: var(--input-bg);
 }
 
-/* Change the blue focus ring to our coffee color */
 .form-control:focus {
   background-color: #fff;
   border-color: var(--primary-coffee);
-  box-shadow: 0 0 0 0.25rem rgba(111, 78, 55, 0.2); /* Coffee color with opacity */
+  box-shadow: 0 0 0 0.25rem rgba(111, 78, 55, 0.2);
 }
 
-/* Button Styling */
+/* --- Buttons --- */
 .btn-primary-cozy {
   background-color: var(--primary-coffee);
   color: #ffffff;
@@ -81,7 +81,7 @@ h3,
   transform: translateY(-2px);
 }
 
-/* Mobile Adjustments */
+/* --- Responsive Design (Mobile) --- */
 @media (max-width: 576px) {
   .auth-card {
     border-radius: 0;

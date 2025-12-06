@@ -1,3 +1,11 @@
+"""
+Database Session Management.
+
+This module sets up the SQLAlchemy engine and session factory.
+It provides the `get_db` dependency used by FastAPI endpoints to obtain
+a database session for each request and ensure it closes afterwards.
+"""
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 from src.app.core.config import settings

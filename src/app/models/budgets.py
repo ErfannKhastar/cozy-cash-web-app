@@ -1,3 +1,10 @@
+"""
+Budget Database Model.
+
+Represents the 'budgets' table, storing spending limits defined by users
+for specific categories and months.
+"""
+
 from sqlalchemy import (
     Column,
     String,
@@ -11,6 +18,13 @@ from src.app.db.session import Base
 
 
 class Budgets(Base):
+    """
+    SQLAlchemy model for Budgets.
+
+    Includes a unique constraint to ensure a user cannot have multiple budgets
+    for the same category in the same month.
+    """
+
     __tablename__ = "budgets"
 
     id = Column(Integer, primary_key=True, nullable=False)

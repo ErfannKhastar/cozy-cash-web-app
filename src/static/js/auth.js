@@ -1,10 +1,21 @@
+/**
+ * @file auth.js
+ * @description Handles user authentication logic including Login and Registration.
+ * Manages API communication for authentication and local storage of JWT tokens.
+ */
+
 // Base URL of your FastAPI backend
-const API_BASE_URL = "";
+const API_BASE_URL = "api/v1";
 
 document.addEventListener("DOMContentLoaded", () => {
   // === LOGIN LOGIC ===
   const loginForm = document.getElementById("loginForm");
 
+  /**
+   * Handles the Login form submission.
+   * Sends credentials using 'application/x-www-form-urlencoded' format
+   * as required by OAuth2PasswordRequestForm in FastAPI.
+   */
   if (loginForm) {
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -13,12 +24,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const password = document.getElementById("loginPassword").value;
 
       try {
-        // نکته مهم: استفاده از URLSearchParams برای ارسال Form Data
+        // NOTE: OAuth2 expects form data, not JSON.
         const formData = new URLSearchParams();
-        formData.append("username", email); // OAuth2 همیشه دنبال 'username' می‌گردد حتی اگر ایمیل باشد
+        formData.append("username", email); // Field must be 'username'
         formData.append("password", password);
 
-        const response = await fetch(`${API_BASE_URL}api/v1/auth/login`, {
+        const response = await fetch(`${API_BASE_URL}/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded", // هدر مخصوص فرم
@@ -31,12 +42,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (response.ok) {
           console.log("Login Successful:", data);
 
-          // ذخیره توکن
+          // Store JWT token and type
           localStorage.setItem("accessToken", data.access_token);
           localStorage.setItem("tokenType", data.token_type);
 
-          // ریدایرکت به داشبورد
-          // اگر داشبورد را جدا اجرا می‌کنی (مثلا Live Server)، آدرس نسبی کار می‌کند
+          // Redirect to Dashboard
           window.location.href = "/dashboard";
         } else {
           console.error("Login Failed:", data);
@@ -53,6 +63,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const registerForm = document.getElementById("registerForm");
 
   if (registerForm) {
+    /**
+     * Handles the Registration form submission.
+     * Sends user data as JSON to create a new account.
+     */
     registerForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -66,8 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
-        // برای ثبت‌نام (Register) چون از Pydantic مدل استفاده کردی، همون JSON درسته
-        const response = await fetch(`${API_BASE_URL}api/v1/users/`, {
+        const response = await fetch(`${API_BASE_URL}/users/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -82,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (response.ok) {
           alert("Registration successful! Please log in.");
-          // سوییچ خودکار به تب لاگین
+          // Automatically switch to Login tab
           const loginTab = new bootstrap.Tab(
             document.querySelector("#login-tab")
           );

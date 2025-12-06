@@ -1,8 +1,19 @@
+"""
+User Database Model.
+
+Represents the 'users' table in the database, storing authentication credentials
+and account metadata.
+"""
+
 from sqlalchemy import Column, String, Integer, TIMESTAMP, text
 from src.app.db.session import Base
 
 
 class Users(Base):
+    """
+    SQLAlchemy model for Users.
+    """
+
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)

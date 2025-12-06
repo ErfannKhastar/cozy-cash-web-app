@@ -1,5 +1,4 @@
-/* استفاده از متغیرهای تعریف شده در dashboard.css */
-
+/* --- Form Inputs Override --- */
 .bg-light-input {
   background-color: var(--bg-cream);
   border: 1px solid #e0e0e0;
@@ -12,7 +11,7 @@
   box-shadow: 0 0 0 0.2rem rgba(111, 78, 55, 0.15);
 }
 
-/* استایل نوار پیشرفت */
+/* --- Progress Bars --- */
 .progress {
   background-color: #e9ecef;
   border-radius: 20px;
@@ -23,7 +22,7 @@
   border-radius: 20px;
 }
 
-/* رنگ‌های اختصاصی برای وضعیت بودجه */
+/* --- Utility Colors --- */
 .bg-warning {
   background-color: #f0ad4e !important;
 }

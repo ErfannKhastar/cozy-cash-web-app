@@ -1,3 +1,11 @@
+"""
+Budget Management Endpoints.
+
+This module handles the creation and management of budgets. It allows users
+to set spending limits for specific categories and months, preventing duplicate
+budgets for the same category/period.
+"""
+
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -18,6 +26,18 @@ def read_budgets(
     db: Session = Depends(get_db),
     current_user: Users = Depends(deps.get_current_user),
 ):
+    """
+    Retrieves a list of budgets set by the current user.
+
+    Args:
+        skip (int, optional): Pagination offset. Defaults to 0.
+        limit (int, optional): Pagination limit. Defaults to 100.
+        db (Session): Database session dependency.
+        current_user (Users): The authenticated user.
+
+    Returns:
+        List[BudgetResponse]: A list of budget objects.
+    """
     return crud_budgets.get_budgets(db, user_id=current_user.id, skip=skip, limit=limit)
 
 
@@ -31,6 +51,23 @@ def create_budget(
     db: Session = Depends(get_db),
     current_user: Users = Depends(deps.get_current_user),
 ):
+    """
+    Creates a new budget for a specific category and month.
+
+    Enforces a constraint that prevents duplicate budgets for the same
+    category and month combination.
+
+    Args:
+        budget_in (BudgetCreate): The budget details.
+        db (Session): Database session dependency.
+        current_user (Users): The authenticated user.
+
+    Returns:
+        BudgetResponse: The created budget object.
+
+    Raises:
+        HTTPException(400): If a budget for this category and month already exists.
+    """
     existing_budget = crud_budgets.get_budget_by_category(
         db, user_id=current_user.id, category=budget_in.category, month=budget_in.month
     )
@@ -49,6 +86,21 @@ def update_budget(
     db: Session = Depends(get_db),
     current_user: Users = Depends(deps.get_current_user),
 ):
+    """
+    Updates an existing budget.
+
+    Args:
+        budget_id (int): The ID of the budget to update.
+        budget_in (BudgetCreate): The new budget data.
+        db (Session): Database session dependency.
+        current_user (Users): The authenticated user.
+
+    Returns:
+        BudgetResponse: The updated budget object.
+
+    Raises:
+        HTTPException(404): If the budget is not found.
+    """
     budget = crud_budgets.update_budget(
         db, budget_id=budget_id, budget_data=budget_in, user_id=current_user.id
     )
@@ -63,6 +115,20 @@ def delete_budget(
     db: Session = Depends(get_db),
     current_user: Users = Depends(deps.get_current_user),
 ):
+    """
+    Deletes a budget record.
+
+    Args:
+        budget_id (int): The ID of the budget to delete.
+        db (Session): Database session dependency.
+        current_user (Users): The authenticated user.
+
+    Returns:
+        None: Returns HTTP 204 (No Content) upon successful deletion.
+
+    Raises:
+        HTTPException(404): If the budget is not found.
+    """
     budget = crud_budgets.delete_budget(
         db, budget_id=budget_id, user_id=current_user.id
     )

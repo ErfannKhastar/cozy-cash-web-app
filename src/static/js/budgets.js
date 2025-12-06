@@ -1,10 +1,13 @@
-// static/js/budgets.js
-
+/**
+ * @file budgets.js
+ * @description Manages the Budget page logic.
+ * Responsible for fetching budgets AND expenses to calculate spending progress.
+ * Includes logic for progress bars, color coding statuses, and duplicate budget prevention.
+ */
 const API_BASE_URL = "api/v1";
 let allBudgets = [];
-let allExpenses = []; // برای محاسبه درصد پیشرفت
+let allExpenses = [];
 
-// --- Helper: آیکون‌ها ---
 function getCategoryStyle(category) {
   const styles = {
     Food: { icon: "bi-basket" },
@@ -44,13 +47,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   setupLogout();
   setupAddBudgetForm(token);
-  setupFilters(); // راه‌اندازی فیلترها
+  setupFilters();
   loadUserProfile(token);
 
   await loadBudgetsAndCalculate(token);
 });
-
-// --- Functions ---
 
 function setupLogout() {
   const logoutBtn = document.getElementById("logoutBtn");
@@ -79,6 +80,10 @@ async function loadUserProfile(token) {
   }
 }
 
+/**
+ * Fetches BOTH budgets and expenses in parallel to calculate progress.
+ * Expenses are needed to see how much of the budget has been consumed.
+ */
 async function loadBudgetsAndCalculate(token) {
   try {
     const [budgetsRes, expensesRes] = await Promise.all([
@@ -95,18 +100,18 @@ async function loadBudgetsAndCalculate(token) {
     if (budgetsRes.ok && expensesRes.ok) {
       allBudgets = await budgetsRes.json();
       allExpenses = await expensesRes.json();
-
-      // مرتب‌سازی: جدیدترین بودجه‌ها اول
+      // Sort budgets by date descending
       allBudgets.sort((a, b) => new Date(b.month) - new Date(a.month));
-
-      // اعمال فیلتر پیش‌فرض (ماه جاری)
-      applyDefaultFilter();
+      applyDefaultFilter(); // Show current month by default
     }
   } catch (error) {
     console.error("Error:", error);
   }
 }
 
+/**
+ * Defaults the view to the current month when page loads.
+ */
 function applyDefaultFilter() {
   const now = new Date();
   const yyyy = now.getFullYear();
@@ -118,12 +123,13 @@ function applyDefaultFilter() {
     filterMonthInput.value = currentMonthStr;
     filterMonthInput.dispatchEvent(new Event("change"));
   } else {
-    // اگر فیلتر در صفحه نبود (برای اطمینان)، همه رو نشون بده
     renderBudgets(allBudgets);
   }
 }
 
-// --- Filter Logic ---
+/**
+ * Handles filtering logic for Category, specific Month, or "All Year".
+ */
 function setupFilters() {
   const categorySelect = document.getElementById("filterCategory");
   const monthInput = document.getElementById("filterMonth");
@@ -132,7 +138,7 @@ function setupFilters() {
 
   function applyFilters() {
     const selectedCategory = categorySelect.value;
-    const selectedMonthVal = monthInput.value; // "2025-11"
+    const selectedMonthVal = monthInput.value;
     const showAllYear = showAllYearCheck.checked;
 
     const filtered = allBudgets.filter((budget) => {
@@ -144,12 +150,10 @@ function setupFilters() {
         const budgetMonthStr = budget.month.substring(0, 7);
 
         if (showAllYear) {
-          // فقط سال چک شود
           const selectedYear = selectedMonthVal.substring(0, 4);
           const budgetYear = budgetMonthStr.substring(0, 4);
           matchTime = budgetYear === selectedYear;
         } else {
-          // تطابق دقیق ماه
           matchTime = budgetMonthStr === selectedMonthVal;
         }
       }
@@ -169,11 +173,15 @@ function setupFilters() {
     resetBtn.addEventListener("click", () => {
       categorySelect.value = "";
       showAllYearCheck.checked = false;
-      applyDefaultFilter(); // برگرد به ماه جاری
+      applyDefaultFilter();
     });
   }
 }
 
+/**
+ * Renders the Budget cards with progress bars.
+ * Calculates spending for each budget based on its category and month.
+ */
 function renderBudgets(budgets) {
   const container = document.getElementById("budgetsContainer");
   container.innerHTML = "";
@@ -191,7 +199,7 @@ function renderBudgets(budgets) {
       year: "numeric",
     });
 
-    // محاسبه پیشرفت
+    // Calculate how much spent for this budget
     const spent = allExpenses
       .filter((exp) => {
         const expDate = new Date(exp.date);
@@ -206,6 +214,7 @@ function renderBudgets(budgets) {
     const percentage = Math.min((spent / budget.amount) * 100, 100);
     const percentageText = Math.round((spent / budget.amount) * 100);
 
+    // Dynamic coloring based on usage
     let colorClass = "bg-success";
     let textClass = "text-success";
     let statusBadge = "Good";
@@ -276,7 +285,6 @@ function renderBudgets(budgets) {
   });
 }
 
-// --- Add Budget Logic ---
 function setupAddBudgetForm(token) {
   const form = document.getElementById("addBudgetForm");
   const monthInput = document.getElementById("budgetMonth");
@@ -295,7 +303,7 @@ function setupAddBudgetForm(token) {
       const amount = document.getElementById("budgetAmount").value;
       const monthStr = document.getElementById("budgetMonth").value;
 
-      // --- لایه دفاعی اول: چک کردن در فرانت‌اند ---
+      // Prevent duplicate budget for same category/month on client side
       const duplicate = allBudgets.find((b) => {
         const budgetMonth = b.month.substring(0, 7);
         return b.category === category && budgetMonth === monthStr;
@@ -307,7 +315,6 @@ function setupAddBudgetForm(token) {
         );
         return;
       }
-      // -----------------------------------------
 
       const fullDate = `${monthStr}-01`;
 
@@ -347,16 +354,17 @@ function setupAddBudgetForm(token) {
   }
 }
 
-// --- Edit Budget Logic ---
+/**
+ * Opens Edit Budget Modal and pre-fills it.
+ */
 window.openEditBudgetModal = function (id) {
   const budget = allBudgets.find((b) => b.id === id);
   if (!budget) return;
 
   document.getElementById("editBudgetId").value = budget.id;
-  document.getElementById("editBudgetCategory").value = budget.category; // فقط نمایش (disabled)
+  document.getElementById("editBudgetCategory").value = budget.category;
   document.getElementById("editBudgetAmount").value = budget.amount;
 
-  // پر کردن ماه (هم نمایش و هم استفاده در submit)
   const monthStr = budget.month.substring(0, 7);
   document.getElementById("editBudgetMonth").value = monthStr;
 
@@ -370,7 +378,6 @@ window.openEditBudgetModal = function (id) {
 
   newForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    // ارسال آبجکت کامل بودجه قبلی برای دسترسی به ماه و دسته
     await submitEditBudget(budget);
   });
 };
@@ -380,6 +387,7 @@ async function submitEditBudget(originalBudget) {
   const newAmount = document.getElementById("editBudgetAmount").value;
   const token = localStorage.getItem("accessToken");
 
+  // Keep original month and category, only update amount
   const payload = {
     category: originalBudget.category,
     amount: newAmount,
@@ -411,7 +419,6 @@ async function submitEditBudget(originalBudget) {
   }
 }
 
-// --- Delete Budget ---
 window.deleteBudget = async function (id) {
   if (!confirm("Delete this budget?")) return;
   const token = localStorage.getItem("accessToken");
