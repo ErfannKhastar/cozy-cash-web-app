@@ -13,6 +13,12 @@ A complete, production-ready RESTful API and web application for personal financ
 
 ---
 
+<p align="center">
+    <img src="cozy_cash_demo.gif" alt="CozyCash Demo" width="800">
+</p>
+
+---
+
 ## ✨ Features
 
 - **Secure Authentication:** User registration and secure login using OAuth2 and JWT tokens.
