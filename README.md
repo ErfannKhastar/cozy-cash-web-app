@@ -104,4 +104,4 @@ I'm a university student and backend software engineer passionate about building
 
 ## 📝 License
 
-This project is distributed under the MIT License. See the `LICENSE` file for more details.
+This project is distributed under the MIT License. See the [LICENSE](LICENSE) file for more details.
