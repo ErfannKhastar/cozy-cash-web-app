@@ -15,9 +15,9 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_USER: ${{ secrets.DATABASE_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.DATABASE_NAME }}_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: expenses_tracker_test
         ports:
           - 5432:5432
         options: >-
@@ -45,14 +45,14 @@ jobs:
     - name: Run Pytest
       env:
         FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-        DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-        DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
-        DATABASE_USER: ${{ secrets.DATABASE_USER }}
-        DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-        DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        ALGORITHM: ${{ secrets.ALGORITHM }}
-        ACCESS_TOKEN_EXPIRE_MINUTES: ${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}
+        DATABASE_HOST: localhost
+        DATABASE_PORT: 5432
+        DATABASE_USER: postgres
+        DATABASE_PASSWORD: testpassword
+        DATABASE_NAME: expenses_tracker
+        SECRET_KEY: test_secret_key_for_ci_cd_environment
+        ALGORITHM: HS256
+        ACCESS_TOKEN_EXPIRE_MINUTES: 30
       run: |
         pytest -v
 
@@ -73,12 +73,20 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Set up Docker Buildx
+      id: buildx
       uses: docker/setup-buildx-action@v3
 
     - name: Build and Push Docker Image
+      id: docker_build
       uses: docker/build-push-action@v5
       with:
         context: .
         target: production
+        builder: ${{ steps.buildx.outputs.name }}
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/cozy_cash_web_app:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: Image digest
+      run: echo ${{ steps.docker_build.outputs.digest }}
