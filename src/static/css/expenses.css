@@ -1,0 +1,48 @@
+/* --- Expense List Row --- */
+.expense-row {
+  border-radius: 12px;
+  transition: all 0.2s ease-in-out;
+  background-color: #fff;
+}
+
+.expense-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(74, 59, 50, 0.08) !important;
+}
+
+/* --- Icons --- */
+.icon-box {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+/* --- Pagination & Buttons --- */
+.page-link {
+  color: var(--primary-coffee);
+}
+.bg-primary-cozy {
+  background-color: var(--primary-coffee) !important;
+  color: white !important;
+}
+
+/* --- Dropdown Fixes (Z-Index) --- */
+/* Ensures dropdown menu appears above other rows */
+.expense-row {
+  position: relative;
+  z-index: 1;
+  overflow: visible !important;
+}
+
+.expense-row:hover {
+  z-index: 100;
+  transform: none !important;
+}
+
+.dropdown-menu {
+  z-index: 1000 !important;
+  margin-top: 0 !important;
+}
