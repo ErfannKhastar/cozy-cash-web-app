@@ -1,5 +1,5 @@
 # Stage 1: Base
-FROM python:3.11-slim as base
+FROM python:3.11-slim AS base
 
 WORKDIR /app
 
@@ -21,7 +21,7 @@ RUN chmod +x start.sh
 
 
 # Stage 2: Development
-FROM base as development
+FROM base AS development
 
 EXPOSE 8000
 
@@ -29,7 +29,7 @@ CMD ["./start.sh"]
 
 
 # Stage 3: Production
-FROM base as production
+FROM base AS production
 
 EXPOSE 8000
 
