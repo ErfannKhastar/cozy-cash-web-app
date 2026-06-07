@@ -33,13 +33,13 @@ A complete, production-ready RESTful API and web application for personal financ
 
 ## 🛠️ Tech Stack & Architecture
 
-| Layer | Technologies & Tools | Description |
-| :--- | :--- | :--- |
-| **Backend** | Python 3.11, FastAPI, SQLAlchemy | Core API logic, routing, and ORM. |
-| **Database** | PostgreSQL, Alembic | Relational data storage and automated schema migrations. |
-| **Frontend** | HTML5, CSS3, Vanilla JS, Bootstrap 5 | Responsive UI and asynchronous API calls. |
-| **Testing** | Pytest, HTTPX | E2E and integration tests with an automated isolated database. |
-| **DevOps** | Docker, Docker Compose, GitHub Actions | Containerization and automated pipelines. |
+| Layer        | Technologies & Tools                   | Description                                                    |
+|:-------------|:---------------------------------------|:---------------------------------------------------------------|
+| **Backend**  | Python 3.11, FastAPI, SQLAlchemy       | Core API logic, routing, and ORM.                              |
+| **Database** | PostgreSQL, Alembic                    | Relational data storage and automated schema migrations.       |
+| **Frontend** | HTML5, CSS3, Vanilla JS, Bootstrap 5   | Responsive UI and asynchronous API calls.                      |
+| **Testing**  | Pytest, HTTPX                          | E2E and integration tests with an automated isolated database. |
+| **DevOps**   | Docker, Docker Compose, GitHub Actions | Containerization and automated pipelines.                      |
 
 ---
 
@@ -100,7 +100,7 @@ Contributions, issues, and feature requests are always welcome!
 
 ## 📫 Let's Connect!
 
-I'm a university student and backend software engineer passionate about building scalable architectures, robust APIs, and learning modern DevOps practices. Whether you have a question about this project, want to discuss Python backend development, or have an exciting collaboration in mind, I'd love to hear from you!
+I'm a backend software engineer passionate about building scalable architectures, robust APIs, and learning modern DevOps practices. Whether you have a question about this project, want to discuss Python backend development, or have an exciting collaboration in mind, I'd love to hear from you!
 
 - 💻 **Explore my work:** [Check out my GitHub Profile](https://github.com/ErfannKhastar) to see my backend journey and other projects.
 - 🔗 **LinkedIn:** [Let's connect professionally!](https://linkedin.com/in/erfankhastar)
