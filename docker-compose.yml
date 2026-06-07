@@ -16,6 +16,18 @@ services:
       timeout: 5s
       retries: 5
 
+  db-init:
+    image: postgres:15
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+    command: >
+      bash -c "psql -h db -U ${DATABASE_USER} -c 'CREATE DATABASE ${DATABASE_NAME}_test;' || echo 'Test DB exists'"
+
   web:
     build:
       context: .
@@ -27,8 +39,8 @@ services:
     env_file:
       - .env
     depends_on:
-      db:
-        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
     environment:
       - DATABASE_HOST=db
 
