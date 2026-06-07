@@ -5,12 +5,12 @@ This module defines shared fixtures for the test suite, handling:
 - Database connection and transaction management.
 - Alembic migrations for setting up the test schema.
 - Test client creation for FastAPI.
-- seeding the database with initial test data (users, expenses, budgets).
+- Seeding the database with initial test data (users, expenses, budgets).
 """
 import os
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from alembic.config import Config as AlembicConfig
 from alembic import command
@@ -24,31 +24,36 @@ from src.app.models import expenses as expense_models
 from src.app.models import budgets as budget_models
 from datetime import datetime, date
 
-
 # Connection URL for the dedicated test database
-SQLALCHEMY_DATABASE_URL = f"postgresql://{settings.database_user}:{settings.database_password}@{settings.database_host}:{settings.database_port}/{settings.database_name}_test"
+SQLALCHEMY_DATABASE_URL = f"postgresql://{settings.database_user}:{settings.database_password}@{settings.database_host}:{settings.database_port}/{settings.database_name}"
+TEST_DB_NAME = f"{settings.database_name}_test"
+TEST_DB_URL = f"postgresql://{settings.database_user}:{settings.database_password}@{settings.database_host}:{settings.database_port}/{TEST_DB_NAME}"
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+engine = create_engine(SQLALCHEMY_DATABASE_URL, isolation_level="AUTOCOMMIT")
 
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
+@pytest.fixture(scope="session", autouse=True)
+def setup_test_db():
+    """
+    Checks for the existence of the test database before running tests.
+    Creates the database if it does not exist.
+    """
+    with engine.connect() as conn:
+        db_exists = conn.execute(text(f"SELECT 1 FROM pg_database WHERE datname='{TEST_DB_NAME}'")).scalar()
+        if not db_exists:
+            conn.execute(text(f"CREATE DATABASE {TEST_DB_NAME}"))
 
 @pytest.fixture(scope="session")
-def apply_migrations():
+def apply_migrations(setup_test_db):
     """
-    Applies database migrations at the start of the test session.
-
-    It runs Alembic 'upgrade head' to create tables and 'downgrade base'
-    after the session ends to clean up.
+    Applies Alembic database migrations to the test database at the start of the session.
+    Downgrades to base after the session finishes to clean up.
     """
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     alembic_ini_path = os.path.join(base_dir, "alembic.ini")
 
     alembic_cfg = AlembicConfig(alembic_ini_path)
-    alembic_cfg.set_main_option("sqlalchemy.url", SQLALCHEMY_DATABASE_URL)
+    alembic_cfg.set_main_option("sqlalchemy.url", TEST_DB_URL)
     alembic_cfg.set_main_option("script_location", os.path.join(base_dir, "alembic"))
-
-    # Flag to prevent env.py from overriding the test database URL
     alembic_cfg.attributes["is_test_run"] = True
 
     try:
@@ -57,35 +62,31 @@ def apply_migrations():
         pass
 
     command.upgrade(alembic_cfg, "head")
-
     yield
-
     command.downgrade(alembic_cfg, "base")
-
 
 @pytest.fixture(scope="function")
 def db_session(apply_migrations):
     """
-    Creates a fresh database session for each test function.
-
-    Wraps the test in a transaction and rolls it back after execution,
-    ensuring isolation between tests.
+    Provides a fresh database session for each test, wrapped in a transaction.
+    Rolls back the transaction after the test to ensure isolation.
     """
-    connection = engine.connect()
+    test_engine = create_engine(TEST_DB_URL)
+    connection = test_engine.connect()
     transaction = connection.begin()
-    session = TestingSessionLocal(bind=connection)
+    session = sessionmaker(bind=connection)()
 
     yield session
 
     session.close()
     transaction.rollback()
     connection.close()
-
+    test_engine.dispose()
 
 @pytest.fixture(scope="function")
 def client(db_session):
     """
-    Creates a FastAPI TestClient with a database dependency override.
+    Creates a FastAPI TestClient with database dependency overrides.
     """
     def override_get_db():
         try:
