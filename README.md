@@ -49,8 +49,8 @@ To get a local copy up and running, follow these simple steps.
 
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/ErfannKhastar/cozy_cash_web_app.git](https://github.com/ErfannKhastar/cozy_cash_web_app.git)
-cd cozy_cash_web_app
+git clone [https://github.com/ErfannKhastar/cozy-cash-web-app.git](https://github.com/ErfannKhastar/cozy-cash-web-app.git)
+cd cozy-cash-web-app
 ```
 
 ### 2. Configure Environment Variables
